@@ -13,10 +13,10 @@ El proyecto se encuentra organizado de la siguiente manera para mantener el cód
 *   **`📁 Java/`** — Todo el desarrollo basado en la plataforma Java.
     *   `📁 proyects/` — Aplicaciones completas y proyectos principales del curso.
     *   `📁 workshops/` — Ejercicios prácticos, retos semanales y talleres de lógica.
-    **`📁 C++/`** — Algoritmos, optimización de memoria y prácticas de bajo nivel en C++.
+      
+*   **`📁 C++/`** — Todo el desarrollo basado en la plataforma C++.
     *   `📁 proyects/` — Aplicaciones completas y proyectos principales del curso.
     *   `📁 workshops/` — Ejercicios prácticos, retos semanales y talleres de lógica.
-*
 ---
 
 ## 🛠️ Tecnologías y Herramientas Utilizadas
