@@ -13,14 +13,16 @@ El proyecto se encuentra organizado de la siguiente manera para mantener el cód
 *   **`📁 Java/`** — Todo el desarrollo basado en la plataforma Java.
     *   `📁 proyects/` — Aplicaciones completas y proyectos principales del curso.
     *   `📁 workshops/` — Ejercicios prácticos, retos semanales y talleres de lógica.
-*   **`📁 C++/`** — Algoritmos, optimización de memoria y prácticas de bajo nivel en C++.
-
+    **`📁 C++/`** — Algoritmos, optimización de memoria y prácticas de bajo nivel en C++.
+    *   `📁 proyects/` — Aplicaciones completas y proyectos principales del curso.
+    *   `📁 workshops/` — Ejercicios prácticos, retos semanales y talleres de lógica.
+*
 ---
 
 ## 🛠️ Tecnologías y Herramientas Utilizadas
 
 *   **Lenguajes:** Java (JDK 17+) & C++ (C++17/20)
-*   **IDE Principal:** IntelliJ IDEA / CLion
+*   **IDE Principal:** IntelliJ IDEA / Code::Blocks
 *   **Control de Versiones:** Git & GitHub
 
 ---
@@ -31,7 +33,7 @@ Si quieres clonar este repositorio y probar el código en tu computadora, sigue 
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone https://github.com
+   git clone https://github.com/felipegb07/Advanced-Programming.git
    ```
 
 2. **Navegar a la carpeta del proyecto:**
@@ -40,7 +42,7 @@ Si quieres clonar este repositorio y probar el código en tu computadora, sigue 
    ```
 
 3. **Abrir con tu IDE preferido:**
-   * Abre la carpeta raíz en **IntelliJ IDEA** o **VS Code** para ejecutar los archivos `.java` o `.cpp`.
+   * Abre la carpeta raíz en **IntelliJ IDEA**, **VS Code** o **Code::Blocks**para ejecutar los archivos `.java` o `.cpp`.
 
 ---
 
@@ -49,4 +51,4 @@ Si quieres clonar este repositorio y probar el código en tu computadora, sigue 
 > 💡 *Este repositorio se mantiene en constante actualización a medida que avanzo en el semestre y desarrollo soluciones más complejas.*
 
 ---
-👨‍💻 Desarrollado por [Felipe González](https://github.com)
+👨‍💻 Desarrollado por [Felipe González](https://github.com/felipegb07)
