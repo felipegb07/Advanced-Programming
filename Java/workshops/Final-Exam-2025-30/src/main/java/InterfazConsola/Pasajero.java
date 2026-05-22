@@ -1,6 +1,7 @@
 package InterfazConsola;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Pasajero {
     /**Atributos*/
@@ -10,9 +11,11 @@ public class Pasajero {
     private int numSillas;
 
     /**Métodos*/
-    public void calcularEdad(){
+    public long calcularEdad(){
         LocalDate fechaActual = LocalDate.now();
-        
+        long edad = ChronoUnit.YEARS.between(fechaNacimiento, fechaActual);
+        System.out.println("Su edad es " + edad);
+        return edad;
     }
 
     /*Getters y setters*/

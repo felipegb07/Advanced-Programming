@@ -2,14 +2,17 @@ package InterfazConsola;
 
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class Internacional extends Vuelo {
     /**Atributos*/
     Scanner entradaDatos = new Scanner(System.in);
-    /**Métodos*/
-    /*Constructores*/
-    public Internacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, int valor, int impuesto) {
-        super(origen, destino, fechaInicial, fechaFinal, numeroVuelo, valor);
+    private RequisitoMigratorio requisitosVuelo;
+
+    public Internacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor, TreeSet<Pasajero> pasajeros, Scanner entradaDatos, RequisitoMigratorio requisitosVuelo) {
+        super(origen, destino, fechaInicial, fechaFinal, numeroVuelo, valor, pasajeros);
+        this.entradaDatos = entradaDatos;
+        this.requisitosVuelo = requisitosVuelo;
     }
 
     /*Calcular valor teniendo en cuenta el impuesto ingresado*/
