@@ -11,7 +11,8 @@ public class Pasajero {
 
     /**Métodos*/
     public void calcularEdad(){
-
+        LocalDate fechaActual = LocalDate.now();
+        
     }
 
     /*Getters y setters*/

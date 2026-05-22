@@ -1,6 +1,8 @@
 package InterfazConsola;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public abstract class Vuelo {
     /**Atributos*/
@@ -9,11 +11,12 @@ public abstract class Vuelo {
     private LocalDate fechaInicial;
     private LocalDate fechaFinal;
     private int numeroVuelo;
-    private int valor;
+    private float valor;
+    Scanner entradaDatos = new Scanner(System.in);
 
     /**Métodos*/
     /*Constructor*/
-    public Vuelo(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, int valor) {
+    public Vuelo(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor) {
         this.origen = origen;
         this.destino = destino;
         this.fechaInicial = fechaInicial;
@@ -23,12 +26,12 @@ public abstract class Vuelo {
     }
 
     /*Calulo de valor*/
-    public float calcularValor(){
+    public float calcularValor(float valor){return valor;}
 
-    }
-
-    /*Busqueda pasajero*/i
+    /*Busqueda pasajero*/
     public Pasajero buscarPasajero(String nombre){
+        System.out.println("Ingrese el nombre del pasajero: ");
+        String nombrePasajero = entradaDatos.nextLine();
 
     }
 
@@ -82,7 +85,7 @@ public abstract class Vuelo {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(float valor) {
         this.valor = valor;
     }
 }
