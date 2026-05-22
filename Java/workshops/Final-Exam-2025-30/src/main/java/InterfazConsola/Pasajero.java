@@ -11,6 +11,17 @@ public class Pasajero {
     private int numSillas;
 
     /**Métodos*/
+    /*Constructor vacío*/
+    public Pasajero(){}
+
+    /*Constructor lleno*/
+    public Pasajero(String nombre, int id, LocalDate fechaNacimiento, int numSillas) {
+        this.nombre = nombre;
+        this.id = id;
+        this.fechaNacimiento = fechaNacimiento;
+        this.numSillas = numSillas;
+    }
+
     public long calcularEdad(){
         LocalDate fechaActual = LocalDate.now();
         long edad = ChronoUnit.YEARS.between(fechaNacimiento, fechaActual);
@@ -49,5 +60,13 @@ public class Pasajero {
 
     public void setNumSillas(int numSillas) {
         this.numSillas = numSillas;
+    }
+
+    @Override
+    public String toString() {
+        return "Pasajero{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                '}';
     }
 }

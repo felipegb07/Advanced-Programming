@@ -9,6 +9,9 @@ public class Internacional extends Vuelo {
     Scanner entradaDatos = new Scanner(System.in);
     private RequisitoMigratorio requisitosVuelo;
 
+    /*Métodos*/
+    public Internacional(){}
+
     public Internacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor, TreeSet<Pasajero> pasajeros, Scanner entradaDatos, RequisitoMigratorio requisitosVuelo) {
         super(origen, destino, fechaInicial, fechaFinal, numeroVuelo, valor, pasajeros);
         this.entradaDatos = entradaDatos;

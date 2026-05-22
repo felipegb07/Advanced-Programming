@@ -9,6 +9,8 @@ public class Nacional extends Vuelo {
     private String tipoAeropuerto;
     private int impuesto;
     Scanner entradaDatos = new Scanner(System.in);
+    public Nacional(){};
+
     public Nacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor, TreeSet<Pasajero> pasajeros, String tipoAeropuerto, int impuesto) {
         super(origen, destino, fechaInicial, fechaFinal, numeroVuelo, valor, pasajeros);
         this.tipoAeropuerto = tipoAeropuerto;

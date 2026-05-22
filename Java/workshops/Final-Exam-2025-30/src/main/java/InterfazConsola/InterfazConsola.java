@@ -17,52 +17,79 @@ public class InterfazConsola implements Serializable {
     Scanner entradaDatos = new Scanner(System.in);
     /**Métodos de la interfaz consola*/
     /*Método principal*/
+    /* Método principal corregido */
     public static void main( String[] args ){
-        InterfazConsola interfaz = new InterfazConsola(); //Curioso esto para poder hacer el llenado
-        //Variables
-        Aerolinea datosAerolinea = new Aerolinea(); //Creamos la aerolinea
+        // Usamos un único objeto de la interfaz para acceder a métodos no estáticos
+        InterfazConsola interfaz = new InterfazConsola();
 
+        // Creamos la aerolínea
+        Aerolinea datosAerolinea = new Aerolinea();
 
-        //Entrada de datos
-        Scanner entrada = new Scanner(System.in);
+        // Entrada de datos unificada
+        Scanner entrada = interfaz.entradaDatos;
+
         System.out.println("---Datos iniciales---");
         System.out.println("Ingrese el nombre de la aerolinea: ");
         String nombreAerolinea = entrada.nextLine();
+        datosAerolinea.setNombre(nombreAerolinea);
 
         System.out.println("Ingrese la cantidad de vuelos: ");
         int cantVuelos = entrada.nextInt();
+        entrada.nextLine(); // 🔥 Limpieza: absorbe el salto de línea del entero
+
         for(int i = 0; i < cantVuelos; i++){
             System.out.println("Ingrese el tipo de vuelo \n\t(N)Nacional - (I)Internacional");
             String tipoVuelo = entrada.nextLine().toUpperCase();
-            if(tipoVuelo.compareTo("N") == 0){
+
+            if(tipoVuelo.equals("N")){
                 System.out.println("---Vuelo Nacional---");
                 Vuelo vueloNacional = new Nacional();
                 vueloNacional = interfaz.llenadoParametros(vueloNacional);
-                vuelosGenerales.add(vueloNacional);
-            }else if(tipoVuelo.compareTo("I") == 0){
+
+                // 🔥 Se agrega directamente al TreeSet interno de la aerolínea
+                datosAerolinea.getVuelosAerolinea().add(vueloNacional);
+
+            } else if(tipoVuelo.equals("I")){
                 System.out.println("---Vuelo internacional---");
                 Vuelo vueloInternacional = new Internacional();
                 vueloInternacional = interfaz.llenadoParametros(vueloInternacional);
-                vuelosGenerales.add(vueloInternacional);
+
+                // 🔥 Se agrega directamente al TreeSet interno de la aerolínea
+                datosAerolinea.getVuelosAerolinea().add(vueloInternacional);
+            } else {
+                System.out.println("Opción inválida. Intente de nuevo.");
+                i--; // Repetir iteración si se equivoca de letra
             }
         }
 
+        /**Datos pasajeros*/
         System.out.println("Ingrese la cantidad de pasajeros");
         int cantPasajeros = entrada.nextInt();
+        entrada.nextLine(); // 🔥 Limpieza del entero anterior
+
+        /*LLenado de datos*/
+        TreeSet<Pasajero> pastajeros = new TreeSet<Pasajero>();
         for(int i = 0; i < cantPasajeros; i++){
+            System.out.println("\n--- Datos del Pasajero " + (i+1) + " ---");
             System.out.println("Ingrese el nombre: ");
-            String nombre = entrada.nextLine();
+            String nombre = entrada.nextLine(); // Ya no se lo saltará
 
-            System.out.println("Ingrese la edad: ");
-            int edad = entrada.nextInt();
+            System.out.println("Ingrese el id: ");
+            int id = entrada.nextInt();
+            entrada.nextLine(); //Limpieaz salto de linea
 
-            System.out.println("Ingrese la fecha de nacimieno en este formato AAAA-MM-DD");
+            System.out.println("Ingrese la fecha de nacimiento en este formato AAAA-MM-DD");
             String fechaNac = entrada.nextLine();
-            LocalDate fechaNacimento = LocalDate.parse(fechaNac);
+            LocalDate fechaNacimiento = LocalDate.parse(fechaNac);
 
-            System.out.println("Ingrese el numero de sillas por pasajero?");
+            System.out.println("Ingrese el numero de sillas por pasajero:");
             int numSillas = entrada.nextInt();
+            entrada.nextLine(); // 🔥 Limpieza final del ciclo
+            Pasajero pasajeroNuevo = new Pasajero(nombre, id, fechaNacimiento, numSillas);
+            pasajeros.add(pasajeroNuevo);
         }
+
+        /*Asignación de vuelos por pasajero*/
     }
 
     public Vuelo llenadoParametros(Vuelo vueloCompleto){
@@ -86,6 +113,7 @@ public class InterfazConsola implements Serializable {
 
         System.out.println("Ingrese el valor del vuelo");
         float valorVuelo = entradaDatos.nextFloat();
+        entradaDatos.nextLine(); // 🔥 Limpieza crucial para que el bucle principal continúe bien
 
         vueloCompleto.setOrigen(origen);
         vueloCompleto.setDestino(destino);
@@ -96,6 +124,7 @@ public class InterfazConsola implements Serializable {
 
         return vueloCompleto;
     }
+
 
     /*Método para guardar la aerolinea*/
     public static void guardarAerolinea(Aerolinea datosAerolinea) throws IOException {

@@ -113,11 +113,23 @@ public abstract class Vuelo {
         this.numeroVuelo = numeroVuelo;
     }
 
-    public int getValor() {
+    public float getValor() {
         return valor;
     }
 
     public void setValor(float valor) {
         this.valor = valor;
+    }
+
+    @Override
+    public String toString() {
+        return "Vuelo{" +
+                "valor=" + valor +
+                ", numeroVuelo=" + numeroVuelo +
+                ", fechaFinal=" + fechaFinal +
+                ", fechaInicial=" + fechaInicial +
+                ", destino='" + destino + '\'' +
+                ", origen='" + origen + '\'' +
+                '}';
     }
 }
