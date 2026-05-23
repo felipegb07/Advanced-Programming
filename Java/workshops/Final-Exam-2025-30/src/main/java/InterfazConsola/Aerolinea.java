@@ -1,41 +1,25 @@
 package InterfazConsola;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.Set;
+import java.time.LocalDate;
 
 public class Aerolinea {
-    /*Atributos*/
     private String nombre;
-    private HashSet<Vuelo> vuelosAerolinea;
+    private Set<Vuelo> vuelosAerolinea = new HashSet<>(); // Inicializado para evitar NullPointer
 
-    /*Métodos*/
     public Aerolinea() {}
-    public Aerolinea(String nombre, HashSet<Vuelo> vuelosAerolinea) {
+    public Aerolinea(String nombre, Set<Vuelo> vuelosAerolinea) {
         this.nombre = nombre;
         this.vuelosAerolinea = vuelosAerolinea;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+    public Set<Vuelo> getVuelosAerolinea() { return vuelosAerolinea; }
+    public void setVuelosAerolinea(Set<Vuelo> vuelosAerolinea) { this.vuelosAerolinea = vuelosAerolinea; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public HashSet<Vuelo> getVuelosAerolinea() {
-        return vuelosAerolinea;
-    }
-
-    public void setVuelosAerolinea(HashSet<Vuelo> vuelosAerolinea) {
-        this.vuelosAerolinea = vuelosAerolinea;
-    }
-
-    /*Buscar vuelo*/
     public int buscarVuelo(int nuevoVuelo) {
-        System.out.println("Ingrese el numero de vuelo");
         for(Vuelo v : vuelosAerolinea) {
             if (v.getNumeroVuelo() == nuevoVuelo) {
                 System.out.println("---Vuelo encontrado---");
@@ -45,21 +29,40 @@ public class Aerolinea {
         return -1;
     }
 
-    /*Agragar pasajero*/
-    public void agregarPasajero(int numeroVuelo, String nombre, int id, LocalDate frechaNacimiento, int numeroSilla) {
-        if(buscarVuelo(numeroVuelo) != -1){
-            System.out.println("Asignando pasajero a " + vuelosAerolinea.toString());
+    public void agregarPasajero(int numeroVuelo, Pasajero pasajero) {
+        for(Vuelo v : vuelosAerolinea) {
+            if(v.getNumeroVuelo() == numeroVuelo) {
+                v.getPasajeros().add(pasajero);
+                System.out.println("Pasajero asignado exitosamente.");
+                return;
+            }
         }
+        System.out.println("Vuelo no encontrado.");
     }
 
-    /*Vuelos con restricciones*/
-    public ArrayList<String> vueloConRestriccion(String restriccion) {
+    public Set<String> vueloConRestriccion(String restriccion) {
         System.out.println("---Vuelos con restricciones---");
-
+        Set<String> resultado = new HashSet<>();
+        for (Vuelo v : vuelosAerolinea) {
+            if (v instanceof Internacional) {
+                Internacional inter = (Internacional) v;
+                if (inter.getRequisitosVuelo() != null && inter.getRequisitosVuelo().getDescripcion().contains(restriccion)) {
+                    resultado.add("Vuelo " + v.getNumeroVuelo() + " a " + v.getDestino());
+                }
+            }
+        }
+        return resultado;
     }
 
     public void generarReporte(String orden) {
-
+        System.out.println("---Reporte general aerolinea---");
+        System.out.println("Vuelos aerolinea");
+        int i = 1;
+        for(Vuelo v: vuelosAerolinea){
+            System.out.println("\nVuelo " + i);
+            System.out.println(v);
+            i++;
+        }
     }
-
 }
+

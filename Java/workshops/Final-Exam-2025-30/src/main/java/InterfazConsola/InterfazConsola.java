@@ -53,7 +53,12 @@ public class InterfazConsola implements Serializable {
                 System.out.println("---Vuelo internacional---");
                 Vuelo vueloInternacional = new Internacional();
                 vueloInternacional = interfaz.llenadoParametros(vueloInternacional);
+                System.out.println("¿El vuelo tiene requisitos migratorios?: ");
+                String requisitos = entrada.nextLine();
+                if(requisitos.equals("S")){
+                    System.out.println("Ingrese el requisito migratorio: ");
 
+                }
                 // 🔥 Se agrega directamente al TreeSet interno de la aerolínea
                 datosAerolinea.getVuelosAerolinea().add(vueloInternacional);
             } else {
@@ -68,7 +73,7 @@ public class InterfazConsola implements Serializable {
         entrada.nextLine(); // 🔥 Limpieza del entero anterior
 
         /*LLenado de datos*/
-        TreeSet<Pasajero> pastajeros = new TreeSet<Pasajero>();
+        TreeSet<Pasajero> pasajeros = new TreeSet<Pasajero>();
         for(int i = 0; i < cantPasajeros; i++){
             System.out.println("\n--- Datos del Pasajero " + (i+1) + " ---");
             System.out.println("Ingrese el nombre: ");
@@ -82,7 +87,7 @@ public class InterfazConsola implements Serializable {
             String fechaNac = entrada.nextLine();
             LocalDate fechaNacimiento = LocalDate.parse(fechaNac);
 
-            System.out.println("Ingrese el numero de sillas por pasajero:");
+            System.out.println("Ingrese el numero de silla: ");
             int numSillas = entrada.nextInt();
             entrada.nextLine(); // 🔥 Limpieza final del ciclo
             Pasajero pasajeroNuevo = new Pasajero(nombre, id, fechaNacimiento, numSillas);
@@ -92,6 +97,7 @@ public class InterfazConsola implements Serializable {
         /*Asignación de vuelos por pasajero*/
     }
 
+    /*Método para el llenado de los parámetros por vuelo*/
     public Vuelo llenadoParametros(Vuelo vueloCompleto){
         System.out.println();
         System.out.println("Ingrese el origen");
