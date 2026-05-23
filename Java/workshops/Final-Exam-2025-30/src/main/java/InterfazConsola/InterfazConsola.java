@@ -1,144 +1,141 @@
 package InterfazConsola;
 
-import sun.reflect.generics.tree.Tree;
 import java.io.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Locale;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-/**
- * Hello world!
- *
- */
 public class InterfazConsola implements Serializable {
-    private static final String archivo = "datos.dat";
-    Scanner entradaDatos = new Scanner(System.in);
-    /**Métodos de la interfaz consola*/
-    /*Método principal*/
-    /* Método principal corregido */
-    public static void main( String[] args ){
-        // Usamos un único objeto de la interfaz para acceder a métodos no estáticos
+    // Buena práctica: Identificador de versión para la serialización
+    private static final long serialVersionUID = 1L;
+    private static final String ARCHIVO = "datos.dat";
+
+    // Scanner global para toda la instancia de la interfaz
+    private final Scanner entradaDatos = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        // Instancia para acceder a los métodos no estáticos
         InterfazConsola interfaz = new InterfazConsola();
-
-        // Creamos la aerolínea
         Aerolinea datosAerolinea = new Aerolinea();
-
-        // Entrada de datos unificada
         Scanner entrada = interfaz.entradaDatos;
 
-        System.out.println("---Datos iniciales---");
-        System.out.println("Ingrese el nombre de la aerolinea: ");
-        String nombreAerolinea = entrada.nextLine();
-        datosAerolinea.setNombre(nombreAerolinea);
+        System.out.println("--- Datos iniciales ---");
+        System.out.print("Ingrese el nombre de la aerolinea: ");
+        datosAerolinea.setNombre(entrada.nextLine());
 
-        System.out.println("Ingrese la cantidad de vuelos: ");
+        // ==========================================
+        // 1. REGISTRO DE VUELOS
+        // ==========================================
+        System.out.print("Ingrese la cantidad de vuelos: ");
         int cantVuelos = entrada.nextInt();
-        entrada.nextLine(); // 🔥 Limpieza: absorbe el salto de línea del entero
+        entrada.nextLine(); // Limpieza del salto de línea
 
-        for(int i = 0; i < cantVuelos; i++){
-            System.out.println("Ingrese el tipo de vuelo \n\t(N)Nacional - (I)Internacional");
+        for (int i = 0; i < cantVuelos; i++) {
+            System.out.println("\n--- Registro de Vuelo " + (i + 1) + " ---");
+            System.out.println("Ingrese el tipo de vuelo \n\t(N) Nacional - (I) Internacional");
             String tipoVuelo = entrada.nextLine().toUpperCase();
 
-            if(tipoVuelo.equals("N")){
-                System.out.println("---Vuelo Nacional---");
-                Vuelo vueloNacional = new Nacional();
-                vueloNacional = interfaz.llenadoParametros(vueloNacional);
-
-                // 🔥 Se agrega directamente al TreeSet interno de la aerolínea
+            if (tipoVuelo.equals("N")) {
+                System.out.println("--- Vuelo Nacional ---");
+                Vuelo vueloNacional = interfaz.llenadoParametros(new Nacional());
                 datosAerolinea.getVuelosAerolinea().add(vueloNacional);
 
-            } else if(tipoVuelo.equals("I")){
-                System.out.println("---Vuelo internacional---");
-                Vuelo vueloInternacional = new Internacional();
-                vueloInternacional = interfaz.llenadoParametros(vueloInternacional);
-                System.out.println("¿El vuelo tiene requisitos migratorios?: ");
-                String requisitos = entrada.nextLine();
-                if(requisitos.equals("S")){
-                    System.out.println("Ingrese el requisito migratorio: ");
+            }else if (tipoVuelo.equals("I")) {
+            System.out.println("--- Vuelo Internacional ---");
 
-                }
-                // 🔥 Se agrega directamente al TreeSet interno de la aerolínea
-                datosAerolinea.getVuelosAerolinea().add(vueloInternacional);
-            } else {
+            Internacional vueloInternacional = new Internacional();
+
+            interfaz.llenadoParametros(vueloInternacional);
+
+            System.out.print("¿El vuelo tiene requisitos migratorios? (S/N): ");
+            String requisitos = entrada.nextLine().toUpperCase();
+
+            if (requisitos.equals("S")) {
+                System.out.print("Ingrese el requisito migratorio: ");
+                String reqTexto = entrada.nextLine();
+                vueloInternacional.setRequisitoMigratorio(reqTexto);
+            }
+
+            // 4. Se agrega al TreeSet de la aerolínea
+            datosAerolinea.getVuelosAerolinea().add(vueloInternacional);
+
+        } else {
                 System.out.println("Opción inválida. Intente de nuevo.");
-                i--; // Repetir iteración si se equivoca de letra
+                i--;
             }
         }
 
-        /**Datos pasajeros*/
-        System.out.println("Ingrese la cantidad de pasajeros");
-        int cantPasajeros = entrada.nextInt();
-        entrada.nextLine(); // 🔥 Limpieza del entero anterior
+        TreeSet<Pasajero> pasajeros = interfaz.registrarPasajeros();
+        guardarAerolinea(datosAerolinea);
 
-        /*LLenado de datos*/
-        TreeSet<Pasajero> pasajeros = new TreeSet<Pasajero>();
-        for(int i = 0; i < cantPasajeros; i++){
-            System.out.println("\n--- Datos del Pasajero " + (i+1) + " ---");
-            System.out.println("Ingrese el nombre: ");
-            String nombre = entrada.nextLine(); // Ya no se lo saltará
-
-            System.out.println("Ingrese el id: ");
-            int id = entrada.nextInt();
-            entrada.nextLine(); //Limpieaz salto de linea
-
-            System.out.println("Ingrese la fecha de nacimiento en este formato AAAA-MM-DD");
-            String fechaNac = entrada.nextLine();
-            LocalDate fechaNacimiento = LocalDate.parse(fechaNac);
-
-            System.out.println("Ingrese el numero de silla: ");
-            int numSillas = entrada.nextInt();
-            entrada.nextLine(); // 🔥 Limpieza final del ciclo
-            Pasajero pasajeroNuevo = new Pasajero(nombre, id, fechaNacimiento, numSillas);
-            pasajeros.add(pasajeroNuevo);
-        }
-
-        /*Asignación de vuelos por pasajero*/
+        interfaz.entradaDatos.close();
     }
 
-    /*Método para el llenado de los parámetros por vuelo*/
-    public Vuelo llenadoParametros(Vuelo vueloCompleto){
-        System.out.println();
-        System.out.println("Ingrese el origen");
-        String origen = entradaDatos.nextLine();
+    public Vuelo llenadoParametros(Vuelo vueloCompleto) {
+        System.out.print("Ingrese el origen: ");
+        vueloCompleto.setOrigen(entradaDatos.nextLine());
 
-        System.out.println("Ingrese el destino");
-        String destino = entradaDatos.nextLine();
+        System.out.print("Ingrese el destino: ");
+        vueloCompleto.setDestino(entradaDatos.nextLine());
 
-        System.out.println("Ingrese la fecha de inicio en este formato AAAA-MM-DD");
-        String fechaIni = entradaDatos.nextLine();
-        LocalDate fechaInicio = LocalDate.parse(fechaIni);
+        vueloCompleto.setFechaInicial(leerFecha("Ingrese la fecha de inicio (AAAA-MM-DD): "));
+        vueloCompleto.setFechaFinal(leerFecha("Ingrese la fecha de finalización (AAAA-MM-DD): "));
 
-        System.out.println("Ingrese la fecha de finalización en este formato AAAA-MM-DD");
-        String fechaFin = entradaDatos.nextLine();
-        LocalDate fechaFinal = LocalDate.parse(fechaFin);
+        System.out.print("Ingrese el numero del vuelo: ");
+        vueloCompleto.setNumeroVuelo(entradaDatos.nextInt());
 
-        System.out.println("Ingrese el numero del vuelo");
-        int numeroVuelo = entradaDatos.nextInt();
-
-        System.out.println("Ingrese el valor del vuelo");
-        float valorVuelo = entradaDatos.nextFloat();
-        entradaDatos.nextLine(); // 🔥 Limpieza crucial para que el bucle principal continúe bien
-
-        vueloCompleto.setOrigen(origen);
-        vueloCompleto.setDestino(destino);
-        vueloCompleto.setFechaInicial(fechaInicio);
-        vueloCompleto.setFechaFinal(fechaFinal);
-        vueloCompleto.setNumeroVuelo(numeroVuelo);
-        vueloCompleto.setValor(valorVuelo);
+        System.out.print("Ingrese el valor del vuelo: ");
+        vueloCompleto.setValor(entradaDatos.nextFloat());
+        entradaDatos.nextLine(); // Limpieza de flujo crucial para los siguientes textos
 
         return vueloCompleto;
     }
 
+    public TreeSet<Pasajero> registrarPasajeros() {
+        TreeSet<Pasajero> listaPasajeros = new TreeSet<>();
+        System.out.print("\nIngrese la cantidad de pasajeros: ");
+        int cantPasajeros = entradaDatos.nextInt();
+        entradaDatos.nextLine(); // Limpieza del salto de línea
 
-    /*Método para guardar la aerolinea*/
-    public static void guardarAerolinea(Aerolinea datosAerolinea) throws IOException {
-        try(ObjectOutputStream escritura = new ObjectOutputStream(new FileOutputStream(archivo))){
+        for (int i = 0; i < cantPasajeros; i++) {
+            System.out.println("\n--- Datos del Pasajero " + (i + 1) + " ---");
+            System.out.print("Ingrese el nombre: ");
+            String nombre = entradaDatos.nextLine();
+
+            System.out.print("Ingrese el id: ");
+            int id = entradaDatos.nextInt();
+            entradaDatos.nextLine(); // Limpieza
+
+            LocalDate fechaNacimiento = leerFecha("Ingrese la fecha de nacimiento (AAAA-MM-DD): ");
+
+            System.out.print("Ingrese el numero de silla: ");
+            int numSillas = entradaDatos.nextInt();
+            entradaDatos.nextLine(); // Limpieza final del ciclo
+
+            listaPasajeros.add(new Pasajero(nombre, id, fechaNacimiento, numSillas));
+        }
+        return listaPasajeros;
+    }
+
+    private LocalDate leerFecha(String mensaje) {
+        while (true) {
+            try {
+                System.out.print(mensaje);
+                return LocalDate.parse(entradaDatos.nextLine().trim());
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato de fecha inválido. Por favor use el formato AAAA-MM-DD.");
+            }
+        }
+    }
+
+    public static void guardarAerolinea(Aerolinea datosAerolinea) {
+        try (ObjectOutputStream escritura = new ObjectOutputStream(new FileOutputStream(ARCHIVO))) {
             escritura.writeObject(datosAerolinea);
-            System.out.println("Escritura corrrecta");
-        }catch (IOException e){
-            System.out.println("Error al momento de hacer la escritura en el archivo");
+            System.out.println("\n¡Datos guardados correctamente en " + ARCHIVO + "!");
+        } catch (IOException e) {
+            System.err.println("Error crítico al escribir en el archivo: " + e.getMessage());
         }
     }
 }
+

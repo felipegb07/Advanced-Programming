@@ -1,16 +1,20 @@
 package InterfazConsola;
 
+import com.sun.tools.jdeprscan.scan.Scan;
+
 import java.time.LocalDate;
+import java.util.Scanner;
 import java.util.TreeSet;
 
 public class Internacional extends Vuelo {
-    private RequisitoMigratorio requisitosVuelo;
+    private String requisitoMigratorio;
+    Scanner entradaDatos = new Scanner(System.in);
 
     public Internacional(){}
 
-    public Internacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor, TreeSet<Pasajero> pasajeros, RequisitoMigratorio requisitosVuelo) {
+    public Internacional(String origen, String destino, LocalDate fechaInicial, LocalDate fechaFinal, int numeroVuelo, float valor, TreeSet<Pasajero> pasajeros, String requisitoMigratorio) {
         super(origen, destino, fechaInicial, fechaFinal, numeroVuelo, valor, pasajeros);
-        this.requisitosVuelo = requisitosVuelo;
+        this.requisitoMigratorio = requisitoMigratorio;
     }
 
     @Override
@@ -20,7 +24,7 @@ public class Internacional extends Vuelo {
         return valorBase + (valorBase * impuesto / 100);
     }
 
-    public RequisitoMigratorio getRequisitosVuelo() { return requisitosVuelo; }
-    public void setRequisitosVuelo(RequisitoMigratorio requisitosVuelo) { this.requisitosVuelo = requisitosVuelo; }
+    public String getRequisitoMigratorio() { return requisitoMigratorio; }
+    public void setRequisitoMigratorio(String requisitoMigratorio) { this.requisitoMigratorio = requisitoMigratorio; }
 }
 
